@@ -53,7 +53,7 @@ public class CruiseControll {
         
         CarSimulator car = new CarSimulator();
         Thread sim = new Thread(car);
-        //sim.start();
+        sim.start();
         //start_sim();
         
         
