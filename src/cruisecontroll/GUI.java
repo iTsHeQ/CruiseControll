@@ -5,50 +5,62 @@
  */
 package cruisecontroll;
 
+
 import javafx.application.Application;
 import javafx.application.Platform;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+
+import javafx.scene.chart.NumberAxis;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 
 /**
  *
  * @author Hekuran
  */
 public class GUI extends Application {
-    CruiseControll cruise = new CruiseControll();
     
     private double cp;
     private double ci;
     private double cd;
     private double desired_speed;
     PID pid = new PID();
+    CruiseControll controlThread;
+    
+
+    private NumberAxis xAxis;
+    VBox chart = new VBox();
     
     
     
     @Override
     public void start(Stage primaryStage) throws Exception {
-        
          //Pane
         GridPane root = new GridPane();
-        Scene scene = new Scene(root, 300, 250);
+        Scene scene = new Scene(root, 800, 500);
         //Label
         Label label1 = new Label("Desired Speed:");
         Label label2 = new Label("CP:");
         Label label3 = new Label("CI: ");
         Label label4 = new Label("CD: ");
+        Label label5 = new Label("Maxacceleration: ");
         //
         TextField txt1 = new TextField();
         TextField txt2 = new TextField();
         TextField txt3 = new TextField();
         TextField txt4 = new TextField();
+        TextField txt5 = new TextField();
         //Buttons
         Button btn = new Button("Start Simulation");
         Button btn2 = new Button("Stop Simulation");
@@ -59,6 +71,7 @@ public class GUI extends Application {
         GridPane.setRowIndex(label2, 1);
         GridPane.setRowIndex(label3, 2);
         GridPane.setRowIndex(label4, 3);
+        GridPane.setRowIndex(label5, 4);
         //Textfieldlocation
         GridPane.setColumnIndex(txt1, 1);
         GridPane.setColumnIndex(txt2, 1);
@@ -67,13 +80,18 @@ public class GUI extends Application {
         GridPane.setColumnIndex(txt3, 1);
         GridPane.setRowIndex(txt4, 3);
         GridPane.setColumnIndex(txt4, 1);
+        GridPane.setRowIndex(txt5, 4);
+        GridPane.setColumnIndex(txt5, 1);
         //Button
-        GridPane.setRowIndex(btn, 4);
-        GridPane.setRowIndex(btn2, 4);
+        GridPane.setRowIndex(btn, 5);
+        GridPane.setRowIndex(btn2, 5);
         GridPane.setColumnIndex(btn2, 1);
         GridPane.setRowIndex(btn3, 5);
         
-        root.getChildren().addAll(label1,label2,label3, label4, txt1, txt2, txt3, txt4, btn, btn2 );
+        //
+        GridPane.setColumnIndex(chart, 2);
+        
+        root.getChildren().addAll(label1,label2,label3, label4,label5, txt1, txt2, txt3, txt4,txt5, btn, btn2, chart );
         
         
         //TextHandler
@@ -106,14 +124,16 @@ public class GUI extends Application {
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                cruise.launch_sim( desired_speed,cp, ci, cd);
-                //launch();
+                controlThread = new CruiseControll(desired_speed, cp, cd, ci);
+                new Thread(controlThread).start();
             }
         });
         btn2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 primaryStage.close();
+                controlThread.stop_sim();
+               
             }
         });
          Thread thread = new Thread(){
@@ -127,10 +147,15 @@ public class GUI extends Application {
         
         
         primaryStage.setTitle("PIDController");
+  
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
 
-    
-    
+
+}
+public static void main(String[] args) {
+        launch(args);
+
+
+    }
 }
