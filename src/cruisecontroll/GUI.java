@@ -45,7 +45,7 @@ public class GUI extends Application {
     public void start(Stage primaryStage) throws Exception {
          //Pane
         GridPane root = new GridPane();
-        Scene scene = new Scene(root, 600, 200);
+        Scene scene = new Scene(root, 400, 200);
         //Label
         Label label1 = new Label("Desired Speed: ");
         Label label2 = new Label("CP:");
@@ -77,8 +77,8 @@ public class GUI extends Application {
         GridPane.setColumnIndex(txt4, 1);
         //Button
         GridPane.setRowIndex(btn, 5);
-        GridPane.setRowIndex(btn2, 6);
-        GridPane.setColumnIndex(btn2, 1);
+        GridPane.setRowIndex(btn2, 5);
+        GridPane.setColumnIndex(btn2, 2);
         GridPane.setRowIndex(btn3, 5);
         GridPane.setColumnIndex(btn3, 1);
         
