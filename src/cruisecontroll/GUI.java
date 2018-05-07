@@ -60,7 +60,6 @@ public class GUI extends Application {
         TextField txt2 = new TextField();
         TextField txt3 = new TextField();
         TextField txt4 = new TextField();
-        TextField txt5 = new TextField();
         //Buttons
         Button btn = new Button("Start Simulation");
         Button btn2 = new Button("Close Simulation");
@@ -80,8 +79,6 @@ public class GUI extends Application {
         GridPane.setColumnIndex(txt3, 1);
         GridPane.setRowIndex(txt4, 3);
         GridPane.setColumnIndex(txt4, 1);
-        GridPane.setRowIndex(txt5, 4);
-        GridPane.setColumnIndex(txt5, 1);
         //Button
         GridPane.setRowIndex(btn, 5);
         GridPane.setRowIndex(btn2, 6);
@@ -92,7 +89,7 @@ public class GUI extends Application {
         //
         //GridPane.setColumnIndex(chart, 2);
         
-        root.getChildren().addAll(label1,label2,label3, label4, txt1, txt2, txt3, txt4,txt5, btn, btn2, 
+        root.getChildren().addAll(label1,label2,label3, label4, txt1, txt2, txt3, txt4, btn, btn2, 
                 btn3 );
         
         
@@ -160,6 +157,7 @@ public class GUI extends Application {
         btn3.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                System.out.println("---------Restarted------------");
                 controlThread.stop_sim();
                
             }

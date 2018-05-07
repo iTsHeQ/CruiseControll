@@ -15,7 +15,7 @@ public class PID {
     private double cd;
     private double errorold = 0 ;
     //private double integral  ;
-    private double ableitung = 0 ;
+    private double ableitung ;
     private int value = 1000; //length of the array
     private double data[] = new double[value];
     private double sum; 
@@ -44,7 +44,23 @@ public class PID {
         
         double result = cp * error + ci * sum + cd * ableitung;
         errorold = error;
+//        System.out.println("ERROR: " + error);
         return result;
+        
+//         data[index] = (setpoint - input);
+//        index = ++index % value;
+//        sum = 0;
+//        sum_error = 0;
+//        for (int i = 0; i < value; i++) {
+//            sum += (data[i] * iteration);
+//            sum_error += data[i]/iteration; //geamtfehler
+//        }
+//        ableitung = ((sum_error - errorold)/ iteration);
+//        
+//        double result = cp * sum_error + ci * sum + cd * ableitung;
+//        errorold = sum_error;
+//
+//        return result;
     }
     
 }
