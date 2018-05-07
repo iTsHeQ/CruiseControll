@@ -14,9 +14,9 @@ public class PID {
     private double ci;
     private double cd;
     private double errorold = 0 ;
-    //private double integral  ;
     private double ableitung ;
-    private int value = 1000; //length of the array
+    //für die zweite Methode
+    private int value = 500; //length of the array
     private double data[] = new double[value];
     private double sum; 
     private double sum_error = 0;
@@ -42,25 +42,31 @@ public class PID {
         
         ableitung = ((error - errorold)/ iteration);
         
-        double result = cp * error + ci * sum + cd * ableitung;
+        double result = (cp * error) + (ci * sum) + (cd * ableitung);
         errorold = error;
-//        System.out.println("ERROR: " + error);
         return result;
+        /**
+         * Mögliche Implementierung mit Berücksichtigung der letzten paar Werte
+         * momentane optimale Lösung mit diesem Verfahren:
+         * cp = 1
+         * ci= 0.5
+         * cd = 0
+         */
+        /*        
+         data[index] = (setpoint - input);
+        index = ++index % value;
+        sum = 0;
+        sum_error = 0;
+        for (int i = 0; i < value; i++) {
+            sum += (data[i] * iteration);
+            sum_error += data[i]/iteration; //geamtfehler
+        }
+        ableitung = ((sum_error - errorold)/ iteration);
         
-//         data[index] = (setpoint - input);
-//        index = ++index % value;
-//        sum = 0;
-//        sum_error = 0;
-//        for (int i = 0; i < value; i++) {
-//            sum += (data[i] * iteration);
-//            sum_error += data[i]/iteration; //geamtfehler
-//        }
-//        ableitung = ((sum_error - errorold)/ iteration);
-//        
-//        double result = cp * sum_error + ci * sum + cd * ableitung;
-//        errorold = sum_error;
-//
-//        return result;
+        double result = cp * sum_error + ci * sum + cd * ableitung;
+        errorold = sum_error;
+
+        return result;*/
     }
     
 }

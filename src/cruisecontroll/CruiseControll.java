@@ -20,8 +20,8 @@ public class CruiseControll implements Runnable{
     private double cp;
     private double ci;
     private double cd;
-    private double maxaccel = 10; // nicht höhere geschwindigkeit als das
-    private double brems = -15; //nicht mehr als das fürs bremsen
+    private double maxaccel = 10; // maximale Beschleunigung
+    private double brems = -15; //maximale Bremsgeschwindkeit
     private boolean run = true;
     
     CarSimulator car = new CarSimulator();
@@ -33,12 +33,9 @@ public class CruiseControll implements Runnable{
         this.cp = cp;
         this.ci = ci;
         this.cd = cd;
-        this.maxaccel = maxaccel;
-        
     }
 
-    //double kp, double ci, double cd
-    
+    //Bedingunge falls Beschleunigung/Bremsung zu hoch/tief ist    
     public double setaccel(double accel){
         if (accel > maxaccel && accel > 0){
             return maxaccel;
@@ -54,6 +51,7 @@ public class CruiseControll implements Runnable{
     public double getSpeed(){
         return car.getSpeed();
     }
+    //Wird im GUI benötigt um den Thread zu stoppen
     public void stop_sim(){
             car.stop();
             run = false;
@@ -73,7 +71,6 @@ public class CruiseControll implements Runnable{
         
         sim.start();
         
-        
         system_iteration = System.currentTimeMillis()/1000.0;
         system_iteration_old = system_iteration-1; //damit kein Nullwert entsteht für die Ableitung
         
@@ -84,9 +81,9 @@ public class CruiseControll implements Runnable{
             system_iteration = System.currentTimeMillis()/1000.0;
             double iteration = (system_iteration - system_iteration_old);
             double accel = pid.calculate(desired_speed, actual_speed,iteration );
-            //System.out.println("ACCEL: " + accel);
             car.setAcceleration(setaccel(accel));
-            index++;
+            index++; //für die Anzahl Iterationen
+            //Output um die Werte zu sehen
             if (accel > maxaccel){
             System.out.println("(" + index + ")" +"desiredspeed: " + desired_speed + " actual: " + actual_speed + " accel: " + maxaccel );
         }
@@ -96,6 +93,12 @@ public class CruiseControll implements Runnable{
         else{
             System.out.println("(" + index + ")" +"desiredspeed: " + desired_speed + " actual: " + actual_speed + " accel: " + accel );
         }
+            
+            
+            system_iteration_old = system_iteration;
+            system_iteration = System.currentTimeMillis()/1000;
+            
+            
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
@@ -103,9 +106,6 @@ public class CruiseControll implements Runnable{
             }
             
             
-            system_iteration_old = system_iteration;
-            system_iteration = System.currentTimeMillis()/1000;
-            //System.out.println("IterationTime: " + iteration);
         }
         
         

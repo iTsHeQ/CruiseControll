@@ -7,7 +7,6 @@ package cruisecontroll;
 
 
 import javafx.application.Application;
-import javafx.application.Platform;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,7 +14,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 
-import javafx.scene.chart.NumberAxis;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -35,12 +33,10 @@ public class GUI extends Application {
     private double ci;
     private double cd;
     private double desired_speed;
-    private double maxaccel;
     PID pid = new PID();
     CruiseControll controlThread;
     
 
-    private NumberAxis xAxis;
     VBox chart = new VBox();
     
     
@@ -51,7 +47,7 @@ public class GUI extends Application {
         GridPane root = new GridPane();
         Scene scene = new Scene(root, 600, 200);
         //Label
-        Label label1 = new Label("Desired Speed:");
+        Label label1 = new Label("Desired Speed: ");
         Label label2 = new Label("CP:");
         Label label3 = new Label("CI: ");
         Label label4 = new Label("CD: ");
@@ -100,7 +96,8 @@ public class GUI extends Application {
                 if(txt1.getText().equals("")){
                     desired_speed = 0;
                 }else{
-                    desired_speed = Double.valueOf(txt1.getText());
+                    double d_speed = Double.valueOf(txt1.getText());
+                    desired_speed = d_speed;
                 }
             }
         });
