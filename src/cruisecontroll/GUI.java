@@ -35,6 +35,7 @@ public class GUI extends Application {
     private double ci;
     private double cd;
     private double desired_speed;
+    private double maxaccel;
     PID pid = new PID();
     CruiseControll controlThread;
     
@@ -48,13 +49,12 @@ public class GUI extends Application {
     public void start(Stage primaryStage) throws Exception {
          //Pane
         GridPane root = new GridPane();
-        Scene scene = new Scene(root, 800, 500);
+        Scene scene = new Scene(root, 600, 200);
         //Label
         Label label1 = new Label("Desired Speed:");
         Label label2 = new Label("CP:");
         Label label3 = new Label("CI: ");
         Label label4 = new Label("CD: ");
-        Label label5 = new Label("Maxacceleration: ");
         //
         TextField txt1 = new TextField();
         TextField txt2 = new TextField();
@@ -63,15 +63,15 @@ public class GUI extends Application {
         TextField txt5 = new TextField();
         //Buttons
         Button btn = new Button("Start Simulation");
-        Button btn2 = new Button("Stop Simulation");
-        Button btn3 = new Button("Restard");
+        Button btn2 = new Button("Close Simulation");
+        Button btn3 = new Button("Stop Simulation");
         
         //set Gridposition
         GridPane.setColumnIndex(label1, 0);
         GridPane.setRowIndex(label2, 1);
         GridPane.setRowIndex(label3, 2);
         GridPane.setRowIndex(label4, 3);
-        GridPane.setRowIndex(label5, 4);
+        
         //Textfieldlocation
         GridPane.setColumnIndex(txt1, 1);
         GridPane.setColumnIndex(txt2, 1);
@@ -84,39 +84,60 @@ public class GUI extends Application {
         GridPane.setColumnIndex(txt5, 1);
         //Button
         GridPane.setRowIndex(btn, 5);
-        GridPane.setRowIndex(btn2, 5);
+        GridPane.setRowIndex(btn2, 6);
         GridPane.setColumnIndex(btn2, 1);
         GridPane.setRowIndex(btn3, 5);
+        GridPane.setColumnIndex(btn3, 1);
         
         //
-        GridPane.setColumnIndex(chart, 2);
+        //GridPane.setColumnIndex(chart, 2);
         
-        root.getChildren().addAll(label1,label2,label3, label4,label5, txt1, txt2, txt3, txt4,txt5, btn, btn2, chart );
+        root.getChildren().addAll(label1,label2,label3, label4, txt1, txt2, txt3, txt4,txt5, btn, btn2, 
+                btn3 );
         
         
         //TextHandler
         txt1.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                desired_speed = Double.valueOf(txt1.getText());
+                if(txt1.getText().equals("")){
+                    desired_speed = 0;
+                }else{
+                    desired_speed = Double.valueOf(txt1.getText());
+                }
             }
         });
         txt2.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                cp = Double.valueOf(txt2.getText());
+                if(txt2.getText().equals("")){
+                    cp = 0;
+                }else{
+                    cp = Double.valueOf(txt2.getText());
+                }
+                
             }
         });
         txt3.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                ci = Double.valueOf(txt3.getText());
+                if(txt3.getText().equals("")){
+                    ci = 0;
+                }else{
+                    ci = Double.valueOf(txt3.getText());
+                }
+                
             }
         });
         txt4.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                cd = Double.valueOf(txt4.getText());
+                if(txt4.getText().equals("")){
+                    cd = 0;
+                }else{
+                    cd = Double.valueOf(txt4.getText());
+                }
+                
             }
         });
         
@@ -136,13 +157,13 @@ public class GUI extends Application {
                
             }
         });
-         Thread thread = new Thread(){
-                @Override
-                public void run() {
-                    pid.calculate(cp, cp, ci);
+        btn3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                controlThread.stop_sim();
+               
             }
-         };
-         Platform.runLater(thread);
+        });
             
         
         

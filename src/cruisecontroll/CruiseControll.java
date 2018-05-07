@@ -32,6 +32,7 @@ public class CruiseControll implements Runnable{
         this.cp = cp;
         this.ci = ci;
         this.cd = cd;
+        this.maxaccel = maxaccel;
         
     }
 
