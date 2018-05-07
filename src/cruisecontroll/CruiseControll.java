@@ -32,7 +32,6 @@ public class CruiseControll implements Runnable{
         this.cp = cp;
         this.ci = ci;
         this.cd = cd;
-        this.maxaccel = maxaccel;
         
     }
 
@@ -47,8 +46,8 @@ public class CruiseControll implements Runnable{
         }
     }
     
-    public double getSpeed(){
-        return car.getSpeed();
+    public double speed(){
+        return this.car.getSpeed();
     }
     public void stop_sim(){
             car.stop();
@@ -79,7 +78,7 @@ public class CruiseControll implements Runnable{
             system_iteration = System.currentTimeMillis()/1000.0;
             double iteration = (system_iteration - system_iteration_old);
             double accel = pid.calculate(desired_speed, actual_speed,iteration );
-            System.out.println("ACCEL: " + accel);
+            //System.out.println("ACCEL: " + accel);
             car.setAcceleration(setaccel(accel));
             if (accel > maxaccel){
             System.out.println("desiredspeed: " + desired_speed + " actual: " + actual_speed + " accel: " + maxaccel );
@@ -96,7 +95,7 @@ public class CruiseControll implements Runnable{
             
             system_iteration_old = system_iteration;
             system_iteration = System.currentTimeMillis()/1000;
-            System.out.println("IterationTime: " + iteration);
+            //System.out.println("IterationTime: " + iteration);
         }
         
         

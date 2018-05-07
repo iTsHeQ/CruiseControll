@@ -16,7 +16,7 @@ public class PID {
     private double errorold = 0 ;
     //private double integral  ;
     private double ableitung = 0 ;
-    private int value = 1000; //length of the array
+    private int value = 500; //length of the array
     private double data[] = new double[value];
     private double sum; 
     private double sum_error = 0;
@@ -36,7 +36,7 @@ public class PID {
     }
     
     public double calculate(double setpoint, double input, double iteration){
-        double error = setpoint - input;
+        /*double error = setpoint - input;
 
         sum += error * iteration;
         
@@ -44,7 +44,22 @@ public class PID {
         
         double result = cp * error + ci * sum + cd * ableitung;
         errorold = error;
+        return result;*/
+        
+        data[index] = (setpoint - input);
+        index = ++index % value;
+        sum = 0;
+        sum_error = 0;
+        for (int i = 0; i < value; i++) {
+            sum += data[i] * iteration;
+            sum_error += data[i]/ iteration;
+        }
+        ableitung = ((sum_error - errorold)/ iteration);
+        
+        double result = cp * sum_error + ci * sum + cd * ableitung;
+        errorold = sum_error;
         return result;
+        
     }
     
 }
